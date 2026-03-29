@@ -1,0 +1,25 @@
+# After: timing flags enabled, function-level timing visible in build log
+# Raw output from -debug-time-function-bodies (visible in Xcode build log):
+#
+#   14320.3ms  /path/AppViewModel.swift:87:17  reduce(_:_:)
+#   11720.1ms  /path/NetworkClient.swift:42:5  fetch<T>(_:)
+#    9210.8ms  /path/ContentView.swift:23:17  body
+#
+# Aggregated by file:
+
+Top 10 slowest files (incremental build):
+  1.  AppViewModel.swift          14.3s   ← complex type inference in reduce()
+  2.  NetworkClient.swift         11.7s   ← generic constraints cascade
+  3.  ContentView.swift            9.2s   ← large body, SwiftUI diffing
+  4.  ProfileViewModel.swift       7.8s   ← @MainActor isolation checks
+  5.  PostService.swift            6.1s   ← Sendable conformance chain
+  6.  SettingsView.swift           5.4s   ← untyped closures
+  7.  AuthManager.swift            4.9s   ← protocol with associated types
+  8.  CacheStore.swift             3.2s
+  9.  Router.swift                 2.1s
+  10. Extensions.swift             1.8s
+
+Recommendations:
+  AppViewModel.swift, NetworkClient.swift → /type-annotations
+  ProfileViewModel.swift, PostService.swift → /concurrency-settings
+  AuthManager.swift → /protocol-separation

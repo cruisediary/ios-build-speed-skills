@@ -1,0 +1,18 @@
+# Before: no timing data available — two separate mechanisms to enable
+
+# === Mechanism 1: File-level summary (zero overhead) ===
+# Run: xcodebuild -showBuildTimingSummary -scheme MyApp -destination 'generic/platform=iOS Simulator'
+# Output shows per-phase totals only — no per-file breakdown:
+#
+# Build succeeded (187.3 seconds)
+#   CompileSwift: 142.1s
+#   Ld: 18.4s
+#   CompileAssetCatalog: 8.2s
+#
+# No per-file breakdown. Useful for identifying which phase is slow.
+
+# === Mechanism 2: Function-level timing (requires build setting change) ===
+# Add to Debug configuration in project.pbxproj or .xcconfig:
+#   OTHER_SWIFT_FLAGS = -Xfrontend -debug-time-function-bodies -Xfrontend -debug-time-expression-type-checking
+# Then run a full build. Results appear in Xcode's build log per file.
+# ⚠️ Remove after diagnosis — adds overhead to every build.

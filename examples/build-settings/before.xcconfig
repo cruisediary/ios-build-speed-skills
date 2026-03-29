@@ -21,3 +21,6 @@ DEPLOYMENT_POSTPROCESSING = YES
 
 // Extra linker pass to remove dead code — adds link time with no Debug benefit
 DEAD_CODE_STRIPPING = YES
+
+// Runs strip on the binary — breaks debugger stepping and wastes time
+STRIP_INSTALLED_PRODUCT = YES

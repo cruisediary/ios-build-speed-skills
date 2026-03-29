@@ -65,6 +65,7 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 |---|---|---|---|
 | `ENABLE_ADDRESS_SANITIZER` | `NO` | Instruments every memory access; adds 20–40% build time and doubles binary size | 🔴 Critical |
 | `ENABLE_THREAD_SANITIZER` | `NO` | Instruments all memory accesses for data race detection; similar overhead to ASan | 🔴 Critical |
+| `ENABLE_UNDEFINED_BEHAVIOR_SANITIZER` | `NO` | Instruments arithmetic operations and type casts; measurable build overhead | 🟠 High |
 
 **For Release configuration, verify (report but do not auto-change):**
 - `SWIFT_OPTIMIZATION_LEVEL` should be `-O` (not `-Onone`)

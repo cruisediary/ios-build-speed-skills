@@ -42,3 +42,6 @@ ENABLE_ADDRESS_SANITIZER = NO
 
 // Keep TSan off in default Debug — mutually exclusive with ASan
 ENABLE_THREAD_SANITIZER = NO
+
+// Keep UBSan off in default Debug — enable only when investigating undefined behaviour
+ENABLE_UNDEFINED_BEHAVIOR_SANITIZER = NO

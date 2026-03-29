@@ -61,7 +61,7 @@ See examples/<skill-name>/ for before/after.
 
 Before opening a PR, verify:
 
-- [ ] Eight-section structure present: TRIGGER, ENVIRONMENT, AUDIT, REPORT, ACTION, EXAMPLES, COMPOSABILITY, REFERENCES
+- [ ] Eight-section structure present: TRIGGER, ENVIRONMENT, AUDIT, REPORT, ACTION, COMPOSABILITY, EXAMPLES, REFERENCES
 - [ ] Invocation name is lowercase, hyphenated, and unique across all skills
 - [ ] Action mode is `apply with confirmation` or `guided`
 - [ ] `apply with confirmation` skills reference `skills/core/git-backup.md` in ACTION

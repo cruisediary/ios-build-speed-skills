@@ -47,6 +47,7 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 | Setting | Expected (Debug) | Issue if different | Severity |
 |---|---|---|---|
 | `DEPLOYMENT_POSTPROCESSING` | `NO` | Master switch: triggers stripping, validation, and symbol copying — all wasted work in Debug | 🟠 High |
+| `DEAD_CODE_STRIPPING` | `NO` | Extra linker pass to remove unreachable code; no benefit in Debug, adds link time | 🟠 High |
 
 **For Release configuration, verify (report but do not auto-change):**
 - `SWIFT_OPTIMIZATION_LEVEL` should be `-O` (not `-Onone`)

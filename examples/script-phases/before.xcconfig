@@ -1,0 +1,20 @@
+// Before: Run Script phases with no input/output declarations.
+//
+// In project.pbxproj, a script phase without inputPaths/outputPaths looks like:
+//
+// 1234ABCD /* Run Script */ = {
+//     isa = PBXShellScriptBuildPhase;
+//     buildActionMask = 2147483647;
+//     files = ();
+//     inputFileListPaths = ();   <-- empty
+//     inputPaths = ();           <-- empty
+//     outputFileListPaths = ();  <-- empty
+//     outputPaths = ();          <-- empty
+//     runOnlyForDeploymentPostprocessing = 0;
+//     shellPath = /bin/sh;
+//     shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config swiftgen.yml\n";
+//     showEnvVarsInLog = 0;
+// };
+//
+// Effect: SwiftGen runs on EVERY build — even if no asset or string file changed.
+// Xcode cannot tell if the outputs are stale, so it always re-executes.

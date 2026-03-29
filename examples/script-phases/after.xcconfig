@@ -1,0 +1,34 @@
+// After: Run Script phase with input/output file declarations.
+//
+// In project.pbxproj, the same phase with proper declarations:
+//
+// 1234ABCD /* Run SwiftGen */ = {
+//     isa = PBXShellScriptBuildPhase;
+//     buildActionMask = 2147483647;
+//     files = ();
+//     inputFileListPaths = (
+//         "$(SRCROOT)/swiftgen-inputs.xcfilelist",  <-- lists .xcassets, Localizable.strings
+//     );
+//     inputPaths = (
+//         "$(SRCROOT)/swiftgen.yml",                <-- config file is also an input
+//     );
+//     outputFileListPaths = (
+//         "$(SRCROOT)/swiftgen-outputs.xcfilelist", <-- lists generated .swift files
+//     );
+//     outputPaths = ();
+//     runOnlyForDeploymentPostprocessing = 0;
+//     shellPath = /bin/sh;
+//     shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config swiftgen.yml\n";
+//     showEnvVarsInLog = 0;
+// };
+//
+// swiftgen-inputs.xcfilelist:
+//   $(SRCROOT)/App/Assets.xcassets
+//   $(SRCROOT)/App/en.lproj/Localizable.strings
+//
+// swiftgen-outputs.xcfilelist:
+//   $(SRCROOT)/Generated/Assets+Generated.swift
+//   $(SRCROOT)/Generated/Strings+Generated.swift
+//
+// Effect: SwiftGen only runs when Assets.xcassets or Localizable.strings change.
+// Clean incremental builds that touch only Swift files skip this phase entirely.

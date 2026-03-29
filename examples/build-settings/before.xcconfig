@@ -33,3 +33,6 @@ VALIDATE_PRODUCT = YES
 
 // Runs pngcrush on every PNG resource — slow for asset-heavy projects
 COMPRESS_PNG_FILES = YES
+
+// Optimises asset catalog for bundle size — runs extra compression passes
+ASSETCATALOG_COMPILER_OPTIMIZATION = space

@@ -33,3 +33,6 @@ VALIDATE_PRODUCT = NO
 
 // Skip pngcrush on PNG resources — functionally identical, faster builds
 COMPRESS_PNG_FILES = NO
+
+// Optimise asset catalog for compile speed instead of bundle size
+ASSETCATALOG_COMPILER_OPTIMIZATION = time

@@ -14,8 +14,8 @@ Follow `skills/core/detect-environment.md`.
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
 Version notes:
-- Xcode 14: only `PreviewProvider` pattern applies
-- Xcode 15+: both `#Preview` macro and `PreviewProvider` apply
+- Xcode 14–14.x: only `PreviewProvider` pattern applies (automated changes supported)
+- Xcode 15+: both `#Preview` macro and `PreviewProvider` apply (automated changes supported)
 
 ## AUDIT
 
@@ -33,7 +33,7 @@ Detect in each remaining file:
 
 Scan:
 ```bash
-grep -rl "#Preview\|PreviewProvider" --include="*.swift" . \
+grep -rl "#Preview\b\|: PreviewProvider" --include="*.swift" . \
   | grep -v "Preview\.swift" \
   | grep -v "_Previews\.swift" \
   | grep -v "Tests/" \
@@ -67,8 +67,8 @@ Mode: `apply with confirmation`
 5. If yes:
    a. Follow `skills/core/git-backup.md` before modifying files.
    b. For each file:
-      - Create `<OriginalName>Preview.swift` and add the necessary imports inside the `#if DEBUG` block
-      - Move the preview struct/macro into the new file, wrapped in `#if DEBUG` / `#endif`
+      - Create `<OriginalName>Preview.swift` with the same `import` statements as the original at the top of the file, then the preview declaration wrapped in `#if DEBUG` / `#endif`
+      - Move the preview struct/macro into the new file, wrapped in `#if DEBUG` / `#endif` (if already wrapped in `#if DEBUG` in the original, strip the existing guard before re-wrapping to avoid double-nesting)
       - Remove the preview block from the original file
    c. Print: `✅ Preview code extracted. Build to verify (Cmd+B).`
 6. If no: print `No changes made.`
@@ -88,5 +88,5 @@ See `examples/preview-isolation/` for before/after Swift files.
 ## REFERENCES
 
 - [WWDC 2023 — What's new in Xcode 15](https://developer.apple.com/videos/play/wwdc2023/10023/) — introduces `#Preview` macro
-- [WWDC 2021 — Discover concurrency in SwiftUI](https://developer.apple.com/videos/play/wwdc2021/10019/) — SwiftUI preview and actor isolation
+- [WWDC 2023 — What's new in Xcode 15 (session 10165)](https://developer.apple.com/videos/play/wwdc2023/10165/) — Xcode build system and incremental compilation improvements
 - [Xcode Previews — Apple Developer](https://developer.apple.com/documentation/swiftui/previews-in-xcode)

@@ -1,0 +1,13 @@
+// Before: Legacy linker forced, all internal modules are dynamic frameworks.
+//
+// Debug configuration — these settings slow every build and app launch.
+
+// Forces legacy ld64 linker — prevents using the Xcode 14+ linker (up to 2× faster)
+OTHER_LDFLAGS = $(inherited) -ObjC -ld64
+
+// Internal feature modules built as dynamic frameworks (the default)
+// Each requires codesigning + embedding in the app bundle
+// MACH_O_TYPE = mh_dylib   <-- set on FeatureHome, FeatureProfile, Core targets
+
+// No exported symbols restriction — linker processes all symbols
+// EXPORTED_SYMBOLS_FILE =   <-- not set; exports everything

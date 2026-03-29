@@ -1,0 +1,16 @@
+// After: New linker, static internal modules, restricted symbol exports.
+//
+// Debug configuration — applied to app target and internal framework targets.
+
+// Remove -ld64 to use the Xcode 14+ rewritten linker (up to 2× faster link times)
+OTHER_LDFLAGS = $(inherited) -ObjC
+
+// Internal feature modules converted to static libraries:
+//   MACH_O_TYPE = staticlib   <-- set on FeatureHome, FeatureProfile, Core targets
+// Static libraries are linked directly into the app binary.
+// No embedding, no codesigning, no dyld loading at launch.
+
+// App target: restrict symbol exports to only what App Extensions need
+// An empty file means no symbols are exported, which is correct for most apps
+// without extensions. Create exported_symbols.txt with just a newline if unsure.
+EXPORTED_SYMBOLS_FILE = $(SRCROOT)/exported_symbols.txt

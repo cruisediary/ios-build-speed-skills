@@ -13,7 +13,7 @@ set -euo pipefail
 
 SKILLS_DIR_NAME="ios-build-speed"
 REPO_URL="https://github.com/cruisediary/ios-build-speed-skills"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-}")" && pwd)"
 SOURCE_DIR="${SCRIPT_DIR}/skills"
 TEMP_DIR=""
 

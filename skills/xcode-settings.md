@@ -85,6 +85,12 @@ Mode: `apply with confirmation`
    c. Print: `✅ Settings applied. Quit and relaunch Xcode for changes to take effect.`
 6. If no: print `No changes made.`
 
+## COMPOSABILITY
+
+Xcode IDE preferences are separate from project-level build settings. Run `/xcode-settings` first to establish a performant Xcode environment, then run `/build-settings` to optimise per-target compile flags — both improvements are additive.
+
+`DerivedDataLocationStyle` is owned by this skill. `/xcode-cache` reads the resolved DerivedData path to configure ccache and cache pre-warming, but does not modify this key. Run `/xcode-settings` before `/xcode-cache` to ensure the DerivedData path is correct.
+
 ## EXAMPLES
 
 See `examples/xcode-settings/` for before/after shell commands.

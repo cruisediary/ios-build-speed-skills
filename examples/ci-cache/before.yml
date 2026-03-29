@@ -1,0 +1,34 @@
+# Before: GitHub Actions workflow without caching
+# Every run resolves SPM dependencies and recompiles from scratch
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # No SPM cache — resolves all packages from scratch (~3-10 min)
+      # No derived data cache — recompiles everything (~5-20 min)
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO

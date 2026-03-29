@@ -1,0 +1,57 @@
+# After: GitHub Actions workflow with SPM and DerivedData caching
+# SPM cache: ~3-10 min saved per run after first cache hit
+# DerivedData cache: ~5-20 min saved for unchanged modules
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cache SPM packages — keyed on Package.resolved for correctness
+      - name: Cache SPM packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      # Cache DerivedData — keyed on source files for correctness
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-deriveddata-${{ hashFiles('**/*.swift', '**/*.m', '**/*.h') }}
+          restore-keys: |
+            ${{ runner.os }}-deriveddata-
+
+      # Pre-boot simulator to avoid boot overhead in test step
+      - name: Boot simulator
+        run: |
+          xcrun simctl boot "iPhone 15" || true
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO

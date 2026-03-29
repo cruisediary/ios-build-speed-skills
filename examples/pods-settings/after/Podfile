@@ -15,8 +15,11 @@ target 'MyApp' do
 
   # If a specific pod requires dynamic linkage, use a post_install hook:
   # post_install do |installer|
-  #   installer.pods_project.target('SomePod').build_configurations.each do |c|
-  #     c.build_settings['MACH_O_TYPE'] = 'mh_dylib'
+  #   installer.pods_project.targets.each do |target|
+  #     next unless target.name == 'SomePod'
+  #     target.build_configurations.each do |c|
+  #       c.build_settings['MACH_O_TYPE'] = 'mh_dylib'
+  #     end
   #   end
   # end
 end

@@ -76,8 +76,11 @@ Step 3 — Build and resolve errors (Cmd+B):
   Common fixes:
   - Pod fails to build as static: check the pod's GitHub issues for static linkage support, or override via post_install hook:
       post_install do |installer|
-        installer.pods_project.target('PodName').build_configurations.each do |c|
-          c.build_settings['MACH_O_TYPE'] = 'mh_dylib'
+        installer.pods_project.targets.each do |target|
+          next unless target.name == 'PodName'
+          target.build_configurations.each do |c|
+            c.build_settings['MACH_O_TYPE'] = 'mh_dylib'
+          end
         end
       end
   - @objc symbols missing: add use_modular_headers! or per-pod :modular_headers => true

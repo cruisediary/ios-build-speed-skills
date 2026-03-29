@@ -38,11 +38,11 @@ Mode: apply with confirmation | guided
 <specific steps>
 # apply with confirmation skills must reference skills/core/git-backup.md before any write
 
-## EXAMPLES
-See examples/<skill-name>/ for before/after.
-
 ## COMPOSABILITY
 <cross-references to related skills and recommended run order>
+
+## EXAMPLES
+See examples/<skill-name>/ for before/after.
 
 ## REFERENCES
 - [Source title](url) — one-line description

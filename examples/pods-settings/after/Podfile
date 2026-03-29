@@ -1,0 +1,18 @@
+# After: static linkage + warning suppression
+# Pods link statically — no dyld load overhead, no embed/codesign per pod
+
+platform :ios, '16.0'
+
+target 'MyApp' do
+  use_frameworks! :linkage => :static
+  inhibit_all_warnings!
+
+  pod 'Alamofire', '~> 5.9'
+  pod 'Kingfisher', '~> 7.0'
+  pod 'SnapKit', '~> 5.7'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Crashlytics'
+
+  # If a specific pod requires dynamic linkage:
+  # pod 'SomePod', :linkage => :dynamic
+end

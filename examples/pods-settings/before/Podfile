@@ -1,0 +1,14 @@
+# Before: dynamic framework linkage
+# Every pod compiles as a dynamic .framework — slow codesigning, embed step, and dyld load
+
+platform :ios, '16.0'
+
+target 'MyApp' do
+  use_frameworks!
+
+  pod 'Alamofire', '~> 5.9'
+  pod 'Kingfisher', '~> 7.0'
+  pod 'SnapKit', '~> 5.7'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Crashlytics'
+end

@@ -38,7 +38,7 @@ ls -t ~/Library/Developer/Xcode/DerivedData/*/Logs/Build/*.xcactivitylog 2>/dev/
 ```
 `.xcactivitylog` files are gzip-compressed SLF0 structured logs. The most practical way to read timing results is:
 1. **Xcode Build Report** (recommended): open the Report Navigator (Cmd+9), select the latest build, click on a compile phase to see per-file times
-2. **xclogparser** (programmatic): `brew install xclogparser && xclogparser parse --file <path>.xcactivitylog --reporter flatJson | jq '.buildSteps[] | select(.type=="swiftCompilation") | {file: .title, duration: .duration} | select(.duration > 5)' | sort -t: -k2 -rn`
+2. **xclogparser** (programmatic): `brew install xclogparser && xclogparser parse --file <path>.xcactivitylog --reporter flatJson | jq '[.buildSteps[] | select(.type=="swiftCompilation") | {file: .title, duration: .duration}] | sort_by(.duration) | reverse | .[:10][]'`
 
 **Audit steps:**
 1. Check if `OTHER_SWIFT_FLAGS` already contains `-debug-time-function-bodies`

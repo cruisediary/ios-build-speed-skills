@@ -88,5 +88,5 @@ See `examples/preview-isolation/` for before/after Swift files.
 ## REFERENCES
 
 - [WWDC 2023 — What's new in Xcode 15](https://developer.apple.com/videos/play/wwdc2023/10023/) — introduces `#Preview` macro
-- [WWDC 2023 — What's new in Xcode 15 (session 10165)](https://developer.apple.com/videos/play/wwdc2023/10165/) — Xcode build system and incremental compilation improvements
+- [WWDC 2023 — Build programmatic UI with Xcode Previews (session 10252)](https://developer.apple.com/videos/play/wwdc2023/10252/) — preview architecture and compile-time behavior
 - [Xcode Previews — Apple Developer](https://developer.apple.com/documentation/swiftui/previews-in-xcode)

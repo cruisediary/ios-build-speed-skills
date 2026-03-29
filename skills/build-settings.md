@@ -50,6 +50,7 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 | `DEAD_CODE_STRIPPING` | `NO` | Extra linker pass to remove unreachable code; no benefit in Debug, adds link time | 🟠 High |
 | `STRIP_INSTALLED_PRODUCT` | `NO` | Running `strip` on the binary in Debug breaks debugger stepping and breakpoints | 🟠 High |
 | `STRIP_SWIFT_SYMBOLS` | `NO` | Post-link Swift symbol stripping step; unneeded in Debug | 🟡 Medium |
+| `VALIDATE_PRODUCT` | `NO` | End-of-build validation (architecture checks, entitlements); unnecessary during development | 🟡 Medium |
 
 **For Release configuration, verify (report but do not auto-change):**
 - `SWIFT_OPTIMIZATION_LEVEL` should be `-O` (not `-Onone`)

@@ -27,3 +27,6 @@ STRIP_INSTALLED_PRODUCT = YES
 
 // Post-link step that strips Swift-specific symbols — unneeded in Debug
 STRIP_SWIFT_SYMBOLS = YES
+
+// Runs architecture and entitlements validation at the end of every build
+VALIDATE_PRODUCT = YES

@@ -27,3 +27,6 @@ STRIP_INSTALLED_PRODUCT = NO
 
 // Skip Swift symbol stripping post-link step
 STRIP_SWIFT_SYMBOLS = NO
+
+// Skip end-of-build product validation
+VALIDATE_PRODUCT = NO

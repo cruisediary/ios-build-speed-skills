@@ -15,3 +15,6 @@ DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
 
 // Testability overhead on the app target
 ENABLE_TESTABILITY = YES
+
+// Master switch: triggers stripping, validation, symbol copying on every build
+DEPLOYMENT_POSTPROCESSING = YES

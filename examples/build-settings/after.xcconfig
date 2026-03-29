@@ -15,3 +15,6 @@ DEBUG_INFORMATION_FORMAT = dwarf
 
 // Testability only on test targets — remove from app target
 // ENABLE_TESTABILITY = YES  (move this to your test target's .xcconfig)
+
+// Disables stripping, validation, and symbol copying in Debug
+DEPLOYMENT_POSTPROCESSING = NO

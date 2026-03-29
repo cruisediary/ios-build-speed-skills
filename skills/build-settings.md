@@ -42,9 +42,16 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 | `ENABLE_USER_SCRIPT_SANDBOXING` | `YES` (Xcode 14+) | Script phases without sandboxing run on every build, blocking parallelism | 🟡 Medium |
 | `BUILD_LIBRARY_FOR_DISTRIBUTION` | `NO` on internal modules | Forces whole-module optimisation even in Debug, negating incremental builds | 🟠 High |
 
+**For Debug configuration — post-processing:**
+
+| Setting | Expected (Debug) | Issue if different | Severity |
+|---|---|---|---|
+| `DEPLOYMENT_POSTPROCESSING` | `NO` | Master switch: triggers stripping, validation, and symbol copying — all wasted work in Debug | 🟠 High |
+
 **For Release configuration, verify (report but do not auto-change):**
 - `SWIFT_OPTIMIZATION_LEVEL` should be `-O` (not `-Onone`)
 - `DEBUG_INFORMATION_FORMAT` should be `dwarf-with-dsym` (needed for crash symbolication)
+- `DEPLOYMENT_POSTPROCESSING` should be `YES`
 
 ## REPORT
 

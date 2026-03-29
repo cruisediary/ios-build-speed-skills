@@ -12,8 +12,10 @@
 set -euo pipefail
 
 SKILLS_DIR_NAME="ios-build-speed"
+REPO_URL="https://github.com/cruisediary/ios-build-speed-skills"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_DIR="${SCRIPT_DIR}/skills"
+TEMP_DIR=""
 
 SCOPE=""
 FORCE=false
@@ -81,19 +83,33 @@ if $UNINSTALL; then
   exit 0
 fi
 
-# Verify source directory exists and contains skill files
+# If skills/ directory is not next to this script (e.g. running via curl | bash),
+# download the repository archive from GitHub into a temp directory.
 if [ ! -d "$SOURCE_DIR" ]; then
-  echo "Error: skills/ directory not found at ${SOURCE_DIR}."
-  echo "Make sure you are running this script from the ios-build-speed-skills repository root."
-  exit 1
+  if ! command -v curl > /dev/null 2>&1; then
+    echo "Error: curl is required to download skills when running via pipe."
+    echo "Clone the repository and run ./install.sh instead:"
+    echo "  git clone ${REPO_URL}.git && cd ios-build-speed-skills && ./install.sh"
+    exit 1
+  fi
+
+  echo "Downloading ios-build-speed-skills from GitHub..."
+  TEMP_DIR="$(mktemp -d)"
+  # Cleanup temp directory on exit
+  trap 'rm -rf "$TEMP_DIR"' EXIT
+
+  curl -fsSL "${REPO_URL}/archive/refs/heads/main.tar.gz" \
+    | tar -xz -C "$TEMP_DIR" --strip-components=1
+
+  SOURCE_DIR="${TEMP_DIR}/skills"
 fi
 
+# Verify source directory contains skill files
 shopt -s nullglob
 skill_files=( "${SOURCE_DIR}"/*.md )
 shopt -u nullglob
 if [ ${#skill_files[@]} -eq 0 ]; then
   echo "Error: No skill files found in ${SOURCE_DIR}."
-  echo "Make sure you are running this script from the ios-build-speed-skills repository root."
   exit 1
 fi
 
@@ -121,7 +137,7 @@ fi
 
 # Install
 mkdir -p "$TARGET_DIR"
-cp -r "${SOURCE_DIR}/"* "$TARGET_DIR/"
+cp -r "${SOURCE_DIR}/." "$TARGET_DIR/"
 
 echo "✅ ios-build-speed skills installed to ${TARGET_DIR}."
 echo ""
@@ -131,11 +147,6 @@ echo "Available skills:"
 shopt -s nullglob
 skills=( "${SOURCE_DIR}"/*.md )
 shopt -u nullglob
-if [ ${#skills[@]} -eq 0 ]; then
-  echo "  (no skills found in ${SOURCE_DIR})"
-else
-  for skill in "${skills[@]}"; do
-    name="$(basename "$skill" .md)"
-    echo "  /${name}"
-  done
-fi
+for skill in "${skills[@]}"; do
+  echo "  /$(basename "$skill" .md)"
+done

@@ -24,3 +24,6 @@ DEAD_CODE_STRIPPING = NO
 
 // Do not strip the binary in Debug — required for the debugger to work correctly
 STRIP_INSTALLED_PRODUCT = NO
+
+// Skip Swift symbol stripping post-link step
+STRIP_SWIFT_SYMBOLS = NO

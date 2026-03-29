@@ -52,6 +52,12 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 | `STRIP_SWIFT_SYMBOLS` | `NO` | Post-link Swift symbol stripping step; unneeded in Debug | 🟡 Medium |
 | `VALIDATE_PRODUCT` | `NO` | End-of-build validation (architecture checks, entitlements); unnecessary during development | 🟡 Medium |
 
+**For Debug configuration — resources:**
+
+| Setting | Expected (Debug) | Issue if different | Severity |
+|---|---|---|---|
+| `COMPRESS_PNG_FILES` | `NO` | Runs pngcrush on every PNG resource; asset-heavy projects add seconds per build | 🟡 Medium |
+
 **For Release configuration, verify (report but do not auto-change):**
 - `SWIFT_OPTIMIZATION_LEVEL` should be `-O` (not `-Onone`)
 - `DEBUG_INFORMATION_FORMAT` should be `dwarf-with-dsym` (needed for crash symbolication)

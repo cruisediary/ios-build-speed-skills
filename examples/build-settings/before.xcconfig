@@ -30,3 +30,6 @@ STRIP_SWIFT_SYMBOLS = YES
 
 // Runs architecture and entitlements validation at the end of every build
 VALIDATE_PRODUCT = YES
+
+// Runs pngcrush on every PNG resource — slow for asset-heavy projects
+COMPRESS_PNG_FILES = YES

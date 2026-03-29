@@ -44,6 +44,12 @@ Each skill scans your project, reports findings by severity, and applies fixes w
 | `/xcode-cache` | Local cache — llbuild, ccache, `.gitignore`, Xcode 16 compilation cache |
 | `/ci-cache` | CI/CD cache — DerivedData and SPM cache configuration for GitHub Actions, Bitrise, etc. |
 
+## Requirements
+
+- [Claude Code](https://claude.ai/code) CLI
+- Xcode 14+ (Xcode 16 recommended for full feature support)
+- macOS 13+
+
 ## Install
 
 **One-liner** (installs globally, available in all Claude Code sessions):
@@ -78,7 +84,7 @@ Restart Claude Code after installing to activate the skills.
 Open Claude Code in your Xcode project directory and invoke any skill:
 
 ```
-/build-settings
+/build-timeline
 ```
 
 Every skill follows the same flow:

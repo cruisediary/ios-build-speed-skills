@@ -1,0 +1,13 @@
+# Before: common missing entries that leave build artifacts in git
+# or prevent caching from working correctly
+
+# Xcode
+xcuserdata/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Missing: DerivedData — often accidentally committed
+# Missing: .build (SPM build artifacts)
+# Missing: *.xcuserstate (per-user Xcode window state)

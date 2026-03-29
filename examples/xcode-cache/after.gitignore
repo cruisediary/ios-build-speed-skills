@@ -1,0 +1,29 @@
+# After: complete .gitignore for iOS projects
+# All build artifacts, caches, and per-user state excluded
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Derived data and build outputs — never commit these
+DerivedData/
+.build/
+
+# Swift Package Manager
+.swiftpm/
+
+# CocoaPods (if not checking in Pods/)
+# Pods/
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output

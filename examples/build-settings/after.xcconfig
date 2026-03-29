@@ -39,3 +39,6 @@ ASSETCATALOG_COMPILER_OPTIMIZATION = time
 
 // Keep ASan off in default Debug — enable only in a dedicated Sanitize scheme
 ENABLE_ADDRESS_SANITIZER = NO
+
+// Keep TSan off in default Debug — mutually exclusive with ASan
+ENABLE_THREAD_SANITIZER = NO

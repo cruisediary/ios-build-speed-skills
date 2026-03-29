@@ -1,0 +1,2 @@
+examples/**/*.swift linguist-documentation=false
+examples/**/Package.swift linguist-documentation=false

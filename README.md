@@ -6,12 +6,19 @@ Each skill scans your project, reports findings by severity, and applies fixes w
 
 ## Skills
 
+### Diagnostics
+
+| Skill | What it does |
+|---|---|
+| `/build-timeline` | Build log analysis — find the Top 10 slowest-compiling files and functions |
+
 ### IDE & Build Settings
 
 | Skill | What it does |
 |---|---|
 | `/xcode-settings` | Xcode IDE preferences — concurrent tasks, DerivedData location, indexing |
 | `/build-settings` | Build flags — `SWIFT_COMPILATION_MODE`, `EAGER_LINKING`, explicit modules, sanitizers |
+| `/concurrency-settings` | Swift Concurrency overhead — `SWIFT_STRICT_CONCURRENCY` Debug/Release split |
 | `/script-phases` | Run Script phases — input/output declarations, sandboxing, phase ordering |
 | `/link-settings` | Linker config — static vs dynamic frameworks, `EXPORTED_SYMBOLS_FILE`, unused deps |
 
@@ -22,6 +29,13 @@ Each skill scans your project, reports findings by severity, and applies fixes w
 | `/modular-architecture` | SPM module boundaries — reduce recompilation blast radius |
 | `/protocol-separation` | Extract protocols to dedicated files — break unnecessary cross-file dependencies |
 | `/type-annotations` | Explicit type annotations — reduce type-inference work at compile time |
+| `/preview-isolation` | SwiftUI preview extraction — move `#Preview` and `PreviewProvider` to dedicated files |
+
+### Dependencies
+
+| Skill | What it does |
+|---|---|
+| `/pods-settings` | CocoaPods linkage — `use_frameworks! :linkage => :static` and pod audit |
 
 ### Caching
 
@@ -79,15 +93,19 @@ Skills build on each other. For a full audit, run them in this sequence:
 
 | Step | Skill | Depends on |
 |---|---|---|
-| 1 | `/xcode-settings` | — |
-| 2 | `/build-settings` | — |
-| 3 | `/script-phases` | — |
-| 4 | `/modular-architecture` | — |
-| 5 | `/link-settings` | Step 4 module structure |
-| 6 | `/protocol-separation` | Step 4 module structure |
-| 7 | `/type-annotations` | Step 6 protocol boundaries |
-| 8 | `/xcode-cache` | Steps 1–7 in place |
-| 9 | `/ci-cache` | Step 1 DerivedData location |
+| 1 | `/build-timeline` | — (baseline measurement) |
+| 2 | `/xcode-settings` | — |
+| 3 | `/build-settings` | — |
+| 4 | `/concurrency-settings` | — |
+| 5 | `/script-phases` | — |
+| 6 | `/modular-architecture` | — |
+| 7 | `/pods-settings` | — |
+| 8 | `/link-settings` | Step 6 module structure, Step 7 pods resolved |
+| 9 | `/protocol-separation` | Step 6 module structure |
+| 10 | `/preview-isolation` | Step 6 module structure |
+| 11 | `/type-annotations` | Step 9 protocol boundaries |
+| 12 | `/xcode-cache` | Steps 1–11 in place |
+| 13 | `/ci-cache` | Step 2 DerivedData location |
 
 You can run individual skills in any order — the table above is the recommended sequence when starting from scratch.
 

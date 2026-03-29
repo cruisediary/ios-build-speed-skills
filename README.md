@@ -1,82 +1,99 @@
 # ios-build-speed-skills
 
-A collection of [Claude Code](https://claude.ai/code) skills for reducing iOS/Xcode build times.
+Claude Code skills that audit and fix common causes of slow iOS/Xcode build times.
 
-## What's included
+Each skill scans your project, reports findings by severity, and applies fixes with your confirmation.
 
-| Skill | Invocation | Mode | What it does |
-|---|---|---|---|
-| xcode-settings | `/xcode-settings` | Apply with confirmation | Xcode IDE preferences via `defaults write` |
-| build-settings | `/build-settings` | Apply with confirmation | Build flag optimisation (`SWIFT_COMPILATION_MODE`, `EAGER_LINKING`, explicit modules, etc.) |
-| modular-architecture | `/modular-architecture` | Guided | SPM module boundary recommendations |
-| protocol-separation | `/protocol-separation` | Apply with confirmation | Extract protocols to dedicated files |
-| type-annotations | `/type-annotations` | Apply with confirmation | Explicit type annotations and complex expression detection |
-| script-phases | `/script-phases` | Apply with confirmation | Run Script phase input/output declarations and sandboxing |
-| link-settings | `/link-settings` | Apply with confirmation | Linker configuration, static vs dynamic frameworks, unused deps |
-| xcode-cache | `/xcode-cache` | Apply with confirmation | llbuild, ccache, `.gitignore`, Xcode 16 compilation cache |
-| ci-cache | `/ci-cache` | Guided | CI/CD pipeline cache instructions |
+## Skills
+
+### IDE & Build Settings
+
+| Skill | What it does |
+|---|---|
+| `/xcode-settings` | Xcode IDE preferences — concurrent tasks, DerivedData location, indexing |
+| `/build-settings` | Build flags — `SWIFT_COMPILATION_MODE`, `EAGER_LINKING`, explicit modules, sanitizers |
+| `/script-phases` | Run Script phases — input/output declarations, sandboxing, phase ordering |
+| `/link-settings` | Linker config — static vs dynamic frameworks, `EXPORTED_SYMBOLS_FILE`, unused deps |
+
+### Architecture
+
+| Skill | What it does |
+|---|---|
+| `/modular-architecture` | SPM module boundaries — reduce recompilation blast radius |
+| `/protocol-separation` | Extract protocols to dedicated files — break unnecessary cross-file dependencies |
+| `/type-annotations` | Explicit type annotations — reduce type-inference work at compile time |
+
+### Caching
+
+| Skill | What it does |
+|---|---|
+| `/xcode-cache` | Local cache — llbuild, ccache, `.gitignore`, Xcode 16 compilation cache |
+| `/ci-cache` | CI/CD cache — DerivedData and SPM cache configuration for GitHub Actions, Bitrise, etc. |
 
 ## Install
 
-**Global install** (available in all Claude Code sessions):
+**One-liner** (installs globally, available in all Claude Code sessions):
 ```sh
 curl -fsSL https://raw.githubusercontent.com/cruisediary/ios-build-speed-skills/main/install.sh | bash -s -- --global
 ```
 
-Or clone and run locally:
+**Or clone and run interactively:**
 ```sh
 git clone https://github.com/cruisediary/ios-build-speed-skills.git
 cd ios-build-speed-skills
 ./install.sh
 ```
 
-**Options:**
+<details>
+<summary>All install options</summary>
+
 ```sh
 ./install.sh              # Interactive: prompts global vs local
 ./install.sh --global     # Install to ~/.claude/skills/ios-build-speed/
 ./install.sh --local      # Install to ./.claude/skills/ios-build-speed/
-./install.sh --force      # Overwrite without prompt (install only)
+./install.sh --force      # Overwrite without prompt
 ./install.sh --uninstall --global
 ./install.sh --uninstall --local
 ```
+</details>
 
-After installing, restart Claude Code to activate skills.
+Restart Claude Code after installing to activate the skills.
 
 ## Usage
 
-Inside Claude Code, invoke any skill by name:
+Open Claude Code in your Xcode project directory and invoke any skill:
 
 ```
-/xcode-settings
+/build-settings
 ```
 
-Each skill will:
-1. Detect your Xcode/Swift version and package manager
-2. Audit your project for the relevant issues
-3. Show findings with severity levels (🔴 Critical → 🔵 Low)
-4. Propose changes and ask for confirmation before modifying any files
+Every skill follows the same flow:
+1. Detects Xcode/Swift version and package manager
+2. Audits the project for relevant issues
+3. Reports findings with severity levels (🔴 Critical → 🔵 Low)
+4. Proposes changes and asks for confirmation before modifying any files
 
 ## Recommended order
 
-Skills build on each other. For a full project audit, run them in this order:
+Skills build on each other. For a full audit, run them in this sequence:
 
-| Step | Skill | Why |
+| Step | Skill | Depends on |
 |---|---|---|
-| 1 | `/xcode-settings` | Sets DerivedData location — needed by `/xcode-cache` and `/ci-cache` |
-| 2 | `/build-settings` | Compile flag optimisation — fast win before structural changes |
-| 3 | `/script-phases` | Eliminate redundant script runs — easy win alongside build settings |
-| 4 | `/modular-architecture` | Largest structural change — do this before protocol or type work |
-| 5 | `/link-settings` | Linker optimisation — informed by module structure from step 4 |
-| 6 | `/protocol-separation` | Reduce blast radius within modules established in step 4 |
-| 7 | `/type-annotations` | Refinement pass — most effective after module boundaries are stable |
-| 8 | `/xcode-cache` | Cache configuration — benefits from steps 1–7 being in place |
-| 9 | `/ci-cache` | CI caching — depends on DerivedData location from step 1 |
+| 1 | `/xcode-settings` | — |
+| 2 | `/build-settings` | — |
+| 3 | `/script-phases` | — |
+| 4 | `/modular-architecture` | — |
+| 5 | `/link-settings` | Step 4 module structure |
+| 6 | `/protocol-separation` | Step 4 module structure |
+| 7 | `/type-annotations` | Step 6 protocol boundaries |
+| 8 | `/xcode-cache` | Steps 1–7 in place |
+| 9 | `/ci-cache` | Step 1 DerivedData location |
 
-You can run individual skills in any order. The table above is the recommended sequence when starting from scratch.
+You can run individual skills in any order — the table above is the recommended sequence when starting from scratch.
 
 ## Safety
 
-All file-modifying skills create a `git stash` checkpoint before making changes:
+All file-modifying skills create a git stash checkpoint before making changes:
 ```
 ios-build-speed: pre-<skill-name> checkpoint
 ```

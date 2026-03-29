@@ -36,3 +36,6 @@ COMPRESS_PNG_FILES = YES
 
 // Optimises asset catalog for bundle size — runs extra compression passes
 ASSETCATALOG_COMPILER_OPTIMIZATION = space
+
+// Instruments every memory access — adds 20–40% build time
+ENABLE_ADDRESS_SANITIZER = YES

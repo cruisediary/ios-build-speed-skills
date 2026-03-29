@@ -36,3 +36,6 @@ COMPRESS_PNG_FILES = NO
 
 // Optimise asset catalog for compile speed instead of bundle size
 ASSETCATALOG_COMPILER_OPTIMIZATION = time
+
+// Keep ASan off in default Debug — enable only in a dedicated Sanitize scheme
+ENABLE_ADDRESS_SANITIZER = NO

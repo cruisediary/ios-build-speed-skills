@@ -59,6 +59,12 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 | `COMPRESS_PNG_FILES` | `NO` | Runs pngcrush on every PNG resource; asset-heavy projects add seconds per build | 🟡 Medium |
 | `ASSETCATALOG_COMPILER_OPTIMIZATION` | `time` | `space` runs extra compression passes on the asset catalog; use `time` in Debug | 🟡 Medium |
 
+**For Debug configuration — sanitizers (must not be left on permanently):**
+
+| Setting | Expected | Issue if enabled in default Debug | Severity |
+|---|---|---|---|
+| `ENABLE_ADDRESS_SANITIZER` | `NO` | Instruments every memory access; adds 20–40% build time and doubles binary size | 🔴 Critical |
+
 **For Release configuration, verify (report but do not auto-change):**
 - `SWIFT_OPTIMIZATION_LEVEL` should be `-O` (not `-Onone`)
 - `DEBUG_INFORMATION_FORMAT` should be `dwarf-with-dsym` (needed for crash symbolication)

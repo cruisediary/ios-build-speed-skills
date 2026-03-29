@@ -1,0 +1,9 @@
+// After: SWIFT_STRICT_CONCURRENCY = targeted in Debug
+// Checks only explicitly annotated async contexts — fast incremental builds
+// Keep complete in your CI scheme or a dedicated "Strict" scheme
+
+SWIFT_STRICT_CONCURRENCY = targeted
+SWIFT_VERSION = 5.9
+
+// CI / Release scheme (separate .xcconfig or scheme override):
+// SWIFT_STRICT_CONCURRENCY = complete

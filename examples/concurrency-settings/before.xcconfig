@@ -1,0 +1,6 @@
+// Before: SWIFT_STRICT_CONCURRENCY = complete in Debug
+// Enables full data race safety checking on every incremental build
+// Correct for CI/Release, but adds measurable overhead in daily development
+
+SWIFT_STRICT_CONCURRENCY = complete
+SWIFT_VERSION = 5.9

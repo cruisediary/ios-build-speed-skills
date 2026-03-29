@@ -37,7 +37,8 @@ grep -rl "#Preview\|PreviewProvider" --include="*.swift" . \
   | grep -v "Preview\.swift" \
   | grep -v "_Previews\.swift" \
   | grep -v "Tests/" \
-  | grep -v "\.build/"
+  | grep -v "\.build/" \
+  | grep -v "Pods/"
 ```
 
 ## REPORT
@@ -66,7 +67,7 @@ Mode: `apply with confirmation`
 5. If yes:
    a. Follow `skills/core/git-backup.md` before modifying files.
    b. For each file:
-      - Create `<OriginalName>Preview.swift` with the same `import` statements as the original
+      - Create `<OriginalName>Preview.swift` and add the necessary imports inside the `#if DEBUG` block
       - Move the preview struct/macro into the new file, wrapped in `#if DEBUG` / `#endif`
       - Remove the preview block from the original file
    c. Print: `✅ Preview code extracted. Build to verify (Cmd+B).`

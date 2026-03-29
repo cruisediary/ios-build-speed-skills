@@ -1,0 +1,17 @@
+// After: optimized Debug build settings
+// These settings maximize incremental build speed
+
+// Only recompiles changed files — essential for fast incremental builds
+SWIFT_COMPILATION_MODE = incremental
+
+// Only builds the architecture of the current device/simulator
+ONLY_ACTIVE_ARCH = YES
+
+// No optimization in debug — faster compilation
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+
+// DWARF only — no dSYM bundle during development (major time saving)
+DEBUG_INFORMATION_FORMAT = dwarf
+
+// Testability only on test targets — remove from app target
+// ENABLE_TESTABILITY = YES  (move this to your test target's .xcconfig)

@@ -1,0 +1,17 @@
+// Before: unoptimized Debug build settings
+// These settings result in slow incremental builds
+
+// Recompiles ALL Swift files on every change — worst for incremental builds
+SWIFT_COMPILATION_MODE = wholemodule
+
+// Builds for all architectures even during development
+ONLY_ACTIVE_ARCH = NO
+
+// Adds optimization overhead to debug builds
+SWIFT_OPTIMIZATION_LEVEL = -O
+
+// Generates full dSYM bundle on every debug build (slow)
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+
+// Testability overhead on the app target
+ENABLE_TESTABILITY = YES

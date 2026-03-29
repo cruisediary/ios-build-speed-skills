@@ -21,7 +21,7 @@ If `Podfile` found but no `Pods/` directory: run Podfile-only checks, skip Pods-
 
 | Finding | Severity |
 |---|---|
-| `use_frameworks!` without `:linkage => :static` | 🔴 Critical |
+| `use_frameworks!` without `:linkage => :static` (defaults to `:dynamic`) | 🔴 Critical |
 | Missing `inhibit_all_warnings!` | 🔵 Low |
 
 Detect with:
@@ -36,13 +36,13 @@ Count dynamic framework bundles:
 ```bash
 find Pods -name "*.framework" -maxdepth 4 2>/dev/null | wc -l
 ```
-Report count as informational — high count (> 10) correlates with launch time overhead.
+Report count as informational before applying the fix — static `.framework` bundles still appear on disk after switching to `:linkage => :static`, so this count does not decrease after the fix and should not be used as a post-fix metric.
 
 Check for dynamic pod targets in `Pods/Pods.xcodeproj/project.pbxproj`:
 ```bash
 grep "MACH_O_TYPE = mh_dylib" Pods/Pods.xcodeproj/project.pbxproj | wc -l
 ```
-Report count as informational — each `mh_dylib` target adds a dyld load at app launch.
+Report count as informational — each `mh_dylib` target adds a dyld load at app launch. After switching to `:linkage => :static` this count should drop to 0; any remaining entries indicate pods that could not be linked statically.
 
 ## REPORT
 
@@ -74,7 +74,12 @@ Step 2 — Reinstall pods:
 
 Step 3 — Build and resolve errors (Cmd+B):
   Common fixes:
-  - Pod fails to build as static: add   pod 'PodName', :linkage => :dynamic   for that pod only
+  - Pod fails to build as static: check the pod's GitHub issues for static linkage support, or override via post_install hook:
+      post_install do |installer|
+        installer.pods_project.target('PodName').build_configurations.each do |c|
+          c.build_settings['MACH_O_TYPE'] = 'mh_dylib'
+        end
+      end
   - @objc symbols missing: add use_modular_headers! or per-pod :modular_headers => true
 
 Step 4 — Verify improvement:

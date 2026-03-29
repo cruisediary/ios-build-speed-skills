@@ -13,6 +13,10 @@ target 'MyApp' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Crashlytics'
 
-  # If a specific pod requires dynamic linkage:
-  # pod 'SomePod', :linkage => :dynamic
+  # If a specific pod requires dynamic linkage, use a post_install hook:
+  # post_install do |installer|
+  #   installer.pods_project.target('SomePod').build_configurations.each do |c|
+  #     c.build_settings['MACH_O_TYPE'] = 'mh_dylib'
+  #   end
+  # end
 end

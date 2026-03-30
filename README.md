@@ -37,12 +37,13 @@ Each skill scans your project, reports findings by severity, and applies fixes w
 |---|---|
 | `/pods-settings` | CocoaPods linkage — `use_frameworks! :linkage => :static` and pod audit |
 
-### Caching
+### Caching & CI
 
 | Skill | What it does |
 |---|---|
 | `/xcode-cache` | Local cache — llbuild, ccache, `.gitignore`, Xcode 16 compilation cache |
 | `/ci-cache` | CI/CD cache — DerivedData and SPM cache configuration for GitHub Actions, Bitrise, etc. |
+| `/ci-workflow` | GitHub Actions — runner version, concurrency, and job structure |
 
 ## Requirements
 
@@ -112,6 +113,7 @@ Skills build on each other. For a full audit, run them in this sequence:
 | 11 | `/type-annotations` | Step 9 protocol boundaries |
 | 12 | `/xcode-cache` | Steps 1–11 in place |
 | 13 | `/ci-cache` | Step 2 DerivedData location |
+| 14 | `/ci-workflow` | Step 13 caching in place |
 
 You can run individual skills in any order — the table above is the recommended sequence when starting from scratch.
 

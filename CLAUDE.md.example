@@ -1,0 +1,7 @@
+## iOS Build Speed Skills
+
+When the user mentions slow builds, Xcode compile time, incremental build issues, or wants to optimize build performance:
+1. Start with `/ios-build-speed` — Claude will read `references/build-timeline.md` to establish a baseline
+2. Follow the COMPOSABILITY section of each skill for recommended next steps
+
+Available: build-timeline, xcode-settings, build-settings, concurrency-settings, script-phases, modular-architecture, pods-settings, link-settings, protocol-separation, preview-isolation, type-annotations, xcode-cache, ci-cache, ci-workflow

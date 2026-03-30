@@ -104,12 +104,9 @@ if [ ! -d "$SOURCE_DIR" ]; then
   SOURCE_DIR="${TEMP_DIR}/skills"
 fi
 
-# Verify source directory contains skill files
-shopt -s nullglob
-skill_files=( "${SOURCE_DIR}"/*.md )
-shopt -u nullglob
-if [ ${#skill_files[@]} -eq 0 ]; then
-  echo "Error: No skill files found in ${SOURCE_DIR}."
+# Verify source directory contains the collection manifest
+if [ ! -f "${SOURCE_DIR}/ios-build-speed/SKILL.md" ]; then
+  echo "Error: Collection manifest not found at ${SOURCE_DIR}/ios-build-speed/SKILL.md."
   exit 1
 fi
 
@@ -137,16 +134,15 @@ fi
 
 # Install
 mkdir -p "$TARGET_DIR"
-cp -r "${SOURCE_DIR}/." "$TARGET_DIR/"
+cp "${SOURCE_DIR}/ios-build-speed/SKILL.md" "$TARGET_DIR/SKILL.md"
+cp -r "${SOURCE_DIR}/references" "$TARGET_DIR/references"
+cp -r "${SOURCE_DIR}/core"       "$TARGET_DIR/core"
 
 echo "✅ ios-build-speed skills installed to ${TARGET_DIR}."
 echo ""
 echo "Next: restart Claude Code to activate."
 echo ""
-echo "Available skills:"
-shopt -s nullglob
-skills=( "${SOURCE_DIR}"/*.md )
-shopt -u nullglob
-for skill in "${skills[@]}"; do
-  echo "  /$(basename "$skill" .md)"
-done
+echo "Available skill: ios-build-speed"
+echo ""
+echo "💡 To enable natural language triggers, add to your project's CLAUDE.md:"
+echo "   See: ${SOURCE_DIR}/CLAUDE.md.example"

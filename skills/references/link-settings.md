@@ -2,14 +2,9 @@
 
 Audits linker configuration and framework embedding to reduce link times and app launch overhead.
 
-## TRIGGER
-
-Invocation: `/link-settings`
-Description: Audit linker settings, framework embedding, and symbol exports to reduce link and launch times.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -78,7 +73,7 @@ Recommendation: Remove SystemConfiguration.framework from Link Binary With Libra
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ## ACTION
 
@@ -87,12 +82,12 @@ Mode: `apply with confirmation`
 **For `-ld64` removal:**
 1. Show the proposed `OTHER_LDFLAGS` change.
 2. Ask: `Remove -ld64 from OTHER_LDFLAGS? [y/N]`
-3. If yes: follow `skills/core/git-backup.md`, apply change.
+3. If yes: follow `../core/git-backup.md`, apply change.
 
 **For unused linked frameworks:**
 1. List each unused framework.
 2. Ask: `Remove these unused linked frameworks? [y/N]`
-3. If yes: follow `skills/core/git-backup.md`, remove entries from `PBXFrameworksBuildPhase`.
+3. If yes: follow `../core/git-backup.md`, remove entries from `PBXFrameworksBuildPhase`.
 
 **For `MACH_O_TYPE` changes and `EXPORTED_SYMBOLS_FILE`:** print guidance only — these are architectural decisions that require careful consideration of each target's consumers.
 

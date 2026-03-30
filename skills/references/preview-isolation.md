@@ -2,14 +2,9 @@
 
 Moves SwiftUI preview code out of production source files to reduce incremental recompilation.
 
-## TRIGGER
-
-Invocation: `/preview-isolation`
-Description: Extract SwiftUI preview code to dedicated files to reduce recompilation blast radius.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -43,7 +38,7 @@ grep -rl "#Preview\b\|: PreviewProvider" --include="*.swift" . \
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🟠 [High] ContentView.swift — PreviewProvider without #if DEBUG guard
@@ -65,7 +60,7 @@ Mode: `apply with confirmation`
    ```
 4. Print: `Apply these extractions? [y/N]`
 5. If yes:
-   a. Follow `skills/core/git-backup.md` before modifying files.
+   a. Follow `../core/git-backup.md` before modifying files.
    b. For each file:
       - Create `<OriginalName>Preview.swift` with the same `import` statements as the original at the top of the file, then the preview declaration wrapped in `#if DEBUG` / `#endif`
       - Move the preview struct/macro into the new file, wrapped in `#if DEBUG` / `#endif` (if already wrapped in `#if DEBUG` in the original, strip the existing guard before re-wrapping to avoid double-nesting)

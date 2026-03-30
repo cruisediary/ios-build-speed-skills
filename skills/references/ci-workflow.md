@@ -2,14 +2,9 @@
 
 Audits GitHub Actions workflows for runner version, concurrency configuration, and job structure to reduce iOS CI build time.
 
-## TRIGGER
-
-Invocation: `/ci-workflow`
-Description: Audit GitHub Actions workflows for runner version, concurrency, and job structure to reduce iOS CI build time.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 Detect GitHub Actions workflows:
 ```bash
@@ -64,7 +59,7 @@ For the concurrency check: inspect whether a `concurrency:` key exists at the to
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format. Report per workflow file.
+Follow `../core/report-formatter.md` format. Report per workflow file.
 
 ```
 ── .github/workflows/ci.yml ──
@@ -100,7 +95,7 @@ Mode: `mixed`
    ```
 5. Print: `Apply these changes? [y/N]`
 6. If yes:
-   a. Follow `skills/core/git-backup.md` before modifying files.
+   a. Follow `../core/git-backup.md` before modifying files.
    b. Apply to each affected workflow file:
       - Replace `macos-12`, `macos-13`, `macos-14` with `macos-15` in `runs-on:`
       - Add at top level (before `jobs:`):

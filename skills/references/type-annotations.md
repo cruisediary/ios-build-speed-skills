@@ -2,14 +2,9 @@
 
 Detects expensive type inference sites and inserts explicit type annotations to reduce Swift compiler type-checking overhead.
 
-## TRIGGER
-
-Invocation: `/type-annotations`
-Description: Add explicit type annotations to reduce Swift compiler type-checking time.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -56,7 +51,7 @@ If absent, flag as 🔵 Low — these flags surface slow-compiling code during d
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🟠 [High] 3 closures in UserListView.swift lack explicit type annotations (line 45, 67, 89)
@@ -79,7 +74,7 @@ For Pattern 1 (unannotated closures) and Pattern 2 (constructor bindings):
 1. Print all proposed annotation insertions with file + line numbers.
 2. Ask: `Apply these annotations? [y/N]`
 3. If yes:
-   a. Follow `skills/core/git-backup.md` before the first modification.
+   a. Follow `../core/git-backup.md` before the first modification.
    b. Insert annotations at the identified sites.
    c. Print: `✅ Annotations applied to N sites across M files.`
 

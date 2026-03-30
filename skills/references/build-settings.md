@@ -2,14 +2,9 @@
 
 Audits and applies Xcode build settings flags to reduce compile and link times.
 
-## TRIGGER
-
-Invocation: `/build-settings`
-Description: Audit and optimize Xcode build settings for faster Debug builds.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -74,7 +69,7 @@ Scan `project.pbxproj` (or `.xcconfig` files if used) for the following settings
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 For each misconfigured setting, include the current value and the expected value:
 ```
@@ -98,7 +93,7 @@ Mode: `apply with confirmation`
    ```
 4. Print: `Apply these changes to project.pbxproj? [y/N]`
 5. If yes:
-   a. Follow `skills/core/git-backup.md` before modifying `project.pbxproj`.
+   a. Follow `../core/git-backup.md` before modifying `project.pbxproj`.
    b. Apply changes to `project.pbxproj` using sed or direct file editing.
    c. Print: `✅ Build settings updated. Clean build folder (Cmd+Shift+K) for changes to take effect.`
 6. If no: print `No changes made.`

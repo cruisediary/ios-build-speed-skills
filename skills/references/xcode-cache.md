@@ -2,14 +2,9 @@
 
 Audits and optimizes Xcode build artifact caching: llbuild manifest cache, .gitignore completeness, ccache integration, and Tuist/XcodeGen cache configuration.
 
-## TRIGGER
-
-Invocation: `/xcode-cache`
-Description: Audit and apply Xcode build cache configuration to maximize cache hits.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -69,7 +64,7 @@ If `project.yml` (XcodeGen) is detected:
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🟠 [High] .gitignore missing DerivedData/ entry
@@ -92,7 +87,7 @@ Mode: `apply with confirmation`
 1. Show proposed additions to `.gitignore`.
 2. Ask: `Add missing .gitignore entries? [y/N]`
 3. If yes:
-   a. Follow `skills/core/git-backup.md`.
+   a. Follow `../core/git-backup.md`.
    b. Append missing entries to `.gitignore`.
    c. Print: `✅ .gitignore updated.`
 

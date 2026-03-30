@@ -20,7 +20,18 @@ If no workflow files found: print `No GitHub Actions workflows found. Create a w
 
 If workflow files found but none contain `xcodebuild` or `swift build`: print `⚠️ No Xcode build steps detected in workflow files. Proceeding with structural audit only.`
 
-Note: This skill audits YAML structure only — it does not require a minimum Xcode version.
+This skill audits YAML structure only and does not require a minimum Xcode version on the local machine. However, the Xcode version pinned in your workflow affects the runner recommendation:
+
+| Xcode in CI | Expected runner | Audit behavior |
+|---|---|---|
+| 16+ | `macos-15` | No runner finding; check concurrency, timeout, job split |
+| 15 | `macos-14` | 🔴 Critical runner finding — upgrade to `macos-15`, pin Xcode 15 path |
+| 14 | `macos-12` or `macos-13` | 🔴 Critical runner finding — upgrade to `macos-15`, pin Xcode 14 path |
+
+Xcode path examples for pinning:
+- Xcode 16: `sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer`
+- Xcode 15: `sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer`
+- Xcode 14: `sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer`
 
 ## AUDIT
 
@@ -108,9 +119,11 @@ Mode: `mixed`
 
 **Xcode version pinning:**
 ```
-Add this step before your xcodebuild step:
+Add this step before your xcodebuild step (adjust path to your target Xcode version):
   - name: Select Xcode
     run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+    # Xcode 15: /Applications/Xcode_15.4.app/Contents/Developer
+    # Xcode 14: /Applications/Xcode_14.3.1.app/Contents/Developer
 ```
 
 **Build/test job separation:**

@@ -1,0 +1,29 @@
+# Before: single job, outdated runner, no concurrency group, no timeout, no Xcode pinning
+# Every push triggers a full run — duplicate runs on the same branch queue up and waste minutes
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme MyApp \
+            -destination 'generic/platform=iOS Simulator'
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 16'

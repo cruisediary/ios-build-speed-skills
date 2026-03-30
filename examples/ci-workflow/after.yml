@@ -1,0 +1,48 @@
+# After: macos-15, Xcode pinned, branch-aware concurrency group, timeout, build/test split
+# Duplicate runs on PRs are cancelled automatically; main branch runs always complete
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme MyApp \
+            -destination 'generic/platform=iOS Simulator'
+
+  test:
+    runs-on: macos-15
+    needs: build
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -scheme MyApp \
+            -destination 'platform=iOS Simulator,name=iPhone 16'

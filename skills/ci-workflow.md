@@ -45,10 +45,11 @@ Scan each `.github/workflows/*.yml` file.
 Detect with:
 ```bash
 grep -l "macos-12\|macos-13\|macos-14\|macos-latest" .github/workflows/*.yml 2>/dev/null
-grep -rL "concurrency" .github/workflows/ 2>/dev/null
 grep -rL "timeout-minutes" .github/workflows/ 2>/dev/null
 grep -rL "xcode-select\|DEVELOPER_DIR\|xcodes" .github/workflows/ 2>/dev/null
 ```
+
+For the concurrency check: inspect whether a `concurrency:` key exists at the top level (indented 0 spaces, directly under the workflow root) or at `jobs.<job_id>.concurrency:`. A substring grep cannot distinguish YAML structural levels — read the YAML directly.
 
 ## REPORT
 
@@ -97,6 +98,7 @@ Mode: `mixed`
           group: ${{ github.workflow }}-${{ github.ref }}
           cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
         ```
+        `cancel-in-progress: true` on all branches would silently cancel main branch runs — this expression limits cancellation to PR and feature branches only.
       - Add `timeout-minutes: 30` to each job missing it.
         Note: 30 minutes is a safe default for build jobs. Test jobs may require higher values — review after applying.
    c. Print: `✅ Workflow updated. Review timeout values for test jobs before pushing.`
@@ -108,7 +110,7 @@ Mode: `mixed`
 ```
 Add this step before your xcodebuild step:
   - name: Select Xcode
-    run: sudo xcode-select -s /Applications/Xcode_16.2.app
+    run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 ```
 
 **Build/test job separation:**
@@ -129,6 +131,7 @@ Split your single job into two:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+      - # Add cache restoration here to reuse build artifacts — see /ci-cache
       - name: Test
         run: xcodebuild test -scheme MyApp -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
@@ -147,4 +150,4 @@ See `examples/ci-workflow/` for before/after GitHub Actions workflow files.
 
 - [GitHub Actions: GitHub-hosted runners](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners) — macOS runner versions and hardware specs
 - [GitHub Actions: Workflow syntax — concurrency](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#concurrency) — concurrency group syntax and cancel-in-progress
-- [GitHub Actions: Workflow syntax — timeout-minutes](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes)
+- [GitHub Actions: Workflow syntax — timeout-minutes](https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes) — per-job timeout to prevent hung builds from consuming runner minutes

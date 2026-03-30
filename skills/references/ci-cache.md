@@ -2,14 +2,9 @@
 
 Audits CI/CD configuration files and provides platform-specific instructions for caching SPM packages, derived data, and build artifacts to reduce CI build times.
 
-## TRIGGER
-
-Invocation: `/ci-cache`
-Description: Audit CI configuration and add caching for SPM packages and derived data.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -44,7 +39,7 @@ Flag each missing cache step per platform.
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 Report per platform:
 

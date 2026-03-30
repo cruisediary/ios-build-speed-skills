@@ -2,14 +2,9 @@
 
 Audits Xcode Run Script build phases for missing input/output declarations and sandboxing settings that cause unnecessary re-execution and block build parallelism.
 
-## TRIGGER
-
-Invocation: `/script-phases`
-Description: Audit Run Script phases for missing inputs/outputs and sandboxing to eliminate redundant script runs.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -60,7 +55,7 @@ Flag any script phase that runs before the Sources phase unless it generates sou
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🔴 [Critical] "Run SwiftGen" has no input/output file declarations
@@ -84,7 +79,7 @@ Mode: `apply with confirmation`
 
 1. Print: `Remove alwaysOutOfDate from "<script-name>"? [y/N]`
 2. If yes:
-   a. Follow `skills/core/git-backup.md` before modifying `project.pbxproj`.
+   a. Follow `../core/git-backup.md` before modifying `project.pbxproj`.
    b. Remove `alwaysOutOfDate = 1` from the phase.
    c. Print: `✅ Removed. Declare input/output file lists to prevent the script from running every build.`
 

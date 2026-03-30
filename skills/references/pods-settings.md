@@ -2,14 +2,9 @@
 
 Audits CocoaPods configuration for linkage settings that slow builds and app launch.
 
-## TRIGGER
-
-Invocation: `/pods-settings`
-Description: Audit CocoaPods linkage settings to reduce build time and app launch overhead.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If no `Podfile` found in the project root: print `No Podfile found — this skill applies to CocoaPods projects only.` and exit.
 
@@ -46,7 +41,7 @@ Report count as informational — each `mh_dylib` target adds a dyld load at app
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🔴 [Critical] use_frameworks! without :linkage => :static (Podfile)

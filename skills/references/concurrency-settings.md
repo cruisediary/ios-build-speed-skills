@@ -2,14 +2,9 @@
 
 Audits Swift Concurrency build settings that add compilation overhead in Debug builds.
 
-## TRIGGER
-
-Invocation: `/concurrency-settings`
-Description: Audit Swift Concurrency settings to reduce compile-time overhead in Debug builds.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes — `SWIFT_STRICT_CONCURRENCY` was introduced in Xcode 14.
 
@@ -41,7 +36,7 @@ grep -rn "@MainActor" --include="*.swift" . | grep -v "\.build" | wc -l
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🔴 [Critical] SWIFT_STRICT_CONCURRENCY = complete (Debug)
@@ -63,7 +58,7 @@ Mode: `apply with confirmation`
    ```
 4. Print: `Apply these changes to project.pbxproj? [y/N]`
 5. If yes:
-   a. Follow `skills/core/git-backup.md` before modifying `project.pbxproj`.
+   a. Follow `../core/git-backup.md` before modifying `project.pbxproj`.
    b. Apply changes to Debug configuration only.
    c. Print: `✅ Concurrency settings updated. Clean build folder (Cmd+Shift+K) for changes to take effect.`
    d. Print: `⚠️ Verify your CI scheme still uses SWIFT_STRICT_CONCURRENCY = complete.`

@@ -2,14 +2,9 @@
 
 Detects protocols defined alongside their implementations and extracts them into dedicated files to minimize recompilation blast radius.
 
-## TRIGGER
-
-Invocation: `/protocol-separation`
-Description: Extract protocols into dedicated files to reduce incremental build recompilation.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -37,7 +32,7 @@ Look for `typealias` declarations in files that also contain class/struct implem
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🟠 [High] UserService.swift defines protocol and implementation in the same file
@@ -67,7 +62,7 @@ For each Finding 1 (protocol co-located with implementation):
 2. Ask: `Apply this extraction? [y/N]`
 
 3. If yes:
-   a. Follow `skills/core/git-backup.md` before the first file modification (run once, not per-file).
+   a. Follow `../core/git-backup.md` before the first file modification (run once, not per-file).
    b. Create `<FileName>Protocol.swift` with:
       - The same `import` statements as the original file
       - The protocol definition block, verbatim

@@ -2,14 +2,9 @@
 
 Audits and applies Xcode IDE-level preferences that affect build performance.
 
-## TRIGGER
-
-Invocation: `/xcode-settings`
-Description: Audit and apply Xcode IDE preferences to reduce build times.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -46,7 +41,7 @@ Get CPU core count: `sysctl -n hw.logicalcpu`
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 Print the environment summary first (output of `core/detect-environment`).
 
@@ -80,7 +75,7 @@ Mode: `apply with confirmation`
    ```
 4. Print: `Apply these changes? [y/N]`
 5. If yes:
-   a. Note: Xcode preferences are stored in `~/Library/Preferences/com.apple.dt.Xcode.plist`, not in the git repo. Follow `skills/core/git-backup.md` only if subsequent project file changes are planned; otherwise skip the git checkpoint for this preferences-only skill.
+   a. Note: Xcode preferences are stored in `~/Library/Preferences/com.apple.dt.Xcode.plist`, not in the git repo. Follow `../core/git-backup.md` only if subsequent project file changes are planned; otherwise skip the git checkpoint for this preferences-only skill.
    b. Run each proposed command.
    c. Print: `✅ Settings applied. Quit and relaunch Xcode for changes to take effect.`
 6. If no: print `No changes made.`

@@ -2,14 +2,9 @@
 
 Analyzes your Xcode project structure and guides decomposition into Swift Package Manager modules to enable true incremental builds.
 
-## TRIGGER
-
-Invocation: `/modular-architecture`
-Description: Analyze project structure and guide SPM module decomposition for faster incremental builds.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -42,7 +37,7 @@ Collect findings from all four patterns.
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 ```
 🔴 [Critical] Monolithic app target: 347 source files in AppTarget

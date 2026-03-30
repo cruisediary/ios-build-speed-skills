@@ -2,14 +2,9 @@
 
 Identifies the slowest-compiling files and functions in your Xcode project.
 
-## TRIGGER
-
-Invocation: `/build-timeline`
-Description: Identify the slowest-compiling files and functions in your Xcode project.
-
 ## ENVIRONMENT
 
-Follow `skills/core/detect-environment.md`.
+Follow `../core/detect-environment.md`.
 
 If Xcode < 14: display 🔴 warning, skip all automated changes, print recommendations as guidance only.
 
@@ -48,7 +43,7 @@ ls -t ~/Library/Developer/Xcode/DerivedData/*/Logs/Build/*.xcactivitylog 2>/dev/
 
 ## REPORT
 
-Follow `skills/core/report-formatter.md` format.
+Follow `../core/report-formatter.md` format.
 
 **If timing data available:**
 ```
@@ -84,7 +79,7 @@ Mode: `guided`
    To enable function-level timing, add these flags to your Debug configuration:
    OTHER_SWIFT_FLAGS = -Xfrontend -debug-time-function-bodies -Xfrontend -debug-time-expression-type-checking
    ```
-2. Follow `skills/core/git-backup.md` before modifying `project.pbxproj`.
+2. Follow `../core/git-backup.md` before modifying `project.pbxproj`.
 3. Print a diff preview:
    ```
    Proposed changes to Debug configuration:
@@ -101,7 +96,7 @@ If `-debug-time-function-bodies` is already set when the skill runs, print:
 ⚠️ Timing flags are currently enabled. Remove them after diagnosis:
 Apply removal? [y/N]
 ```
-If yes: follow `skills/core/git-backup.md` and remove the flags from `project.pbxproj`.
+If yes: follow `../core/git-backup.md` and remove the flags from `project.pbxproj`.
 
 ## COMPOSABILITY
 

@@ -150,13 +150,102 @@ run_interactive() {
 }
 
 # ---------------------------------------------------------------------------
+# --ci mode
+# ---------------------------------------------------------------------------
+run_ci() {
+  if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+    echo "SKIP: ANTHROPIC_API_KEY not set"
+    exit 2
+  fi
+
+  echo "Trigger Integration Tests (Claude API)"
+  echo "======================================="
+  echo ""
+
+  SKILL_CONTENT=$(cat "$SKILL_MD")
+  SYSTEM_PROMPT="${SKILL_CONTENT}
+
+After identifying the right skill for the user's request, respond ONLY with valid JSON on a single line:
+{\"reference\": \"<filename-stem-without-extension>\"}
+If no ios-build-speed skill applies, respond with:
+{\"reference\": \"none\"}"
+
+  MODEL="claude-haiku-4-5-20251001"
+
+  call_api() {
+    local phrase="$1"
+    local response
+    # Use || true so a curl error does not abort under set -e.
+    # An empty or error response is caught by the python3 parse below.
+    response=$(curl -s https://api.anthropic.com/v1/messages \
+      -H "x-api-key: $ANTHROPIC_API_KEY" \
+      -H "anthropic-version: 2023-06-01" \
+      -H "content-type: application/json" \
+      -d "{
+        \"model\": \"$MODEL\",
+        \"max_tokens\": 64,
+        \"system\": $(printf '%s' "$SYSTEM_PROMPT" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))'),
+        \"messages\": [{\"role\": \"user\", \"content\": $(printf '%s' "$phrase" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')}]
+      }" || true)
+    if [ -z "$response" ]; then
+      echo "PARSE_ERROR"
+      return
+    fi
+    echo "$response" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+text = data['content'][0]['text'].strip()
+parsed = json.loads(text)
+print(parsed['reference'])
+" 2>/dev/null || echo "PARSE_ERROR"
+  }
+
+  while IFS=$'\t' read -r id phrase ref; do
+    [[ "$id" =~ ^# ]] && continue
+    [ -z "$id" ] && continue
+
+    printf "[%s] %-55s " "$id" "\"$phrase\""
+
+    run1=$(call_api "$phrase")
+    run2=$(call_api "$phrase")
+
+    if [ "$run1" = "PARSE_ERROR" ] || [ "$run2" = "PARSE_ERROR" ]; then
+      fail "$id: API response parse error (run1=$run1, run2=$run2)"
+      continue
+    fi
+
+    if [ "$run1" != "$run2" ]; then
+      fail "$id: FLAKY (run1=$run1, run2=$run2)"
+      continue
+    fi
+
+    if [ "$ref" = "NONE" ]; then
+      if [ "$run1" = "none" ]; then
+        pass "$id"
+      else
+        fail "$id: expected none, got $run1"
+      fi
+    else
+      if [ "$run1" = "$ref" ]; then
+        pass "$id"
+      else
+        fail "$id: expected $ref, got $run1"
+      fi
+    fi
+  done < "$TEST_CASES"
+
+  echo ""
+  summary
+}
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 case "${1:-}" in
   --static)    run_static ;;
   --quick|"")  run_interactive quick ;;
   --manual)    run_interactive manual ;;
-  --ci)        echo "TODO: --ci mode"; exit 1 ;;
+  --ci)        run_ci ;;
   *)
     echo "Usage: $0 [--quick | --manual | --static | --ci]"
     exit 1

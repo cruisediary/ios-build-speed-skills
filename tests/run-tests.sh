@@ -96,9 +96,69 @@ summary() {
 }
 
 # ---------------------------------------------------------------------------
+# Interactive mode (shared by --quick and --manual)
+# ---------------------------------------------------------------------------
+QUICK_IDS=(T01 T03 T11 T14 N01)
+
+run_interactive() {
+  local mode="$1"  # "quick" or "manual"
+  local title ids=()
+
+  if [ "$mode" = "quick" ]; then
+    title="iOS Build Speed — Quick Trigger Test (5 cases)"
+    ids=("${QUICK_IDS[@]}")
+  else
+    title="iOS Build Speed — Full Trigger Test (17 cases)"
+    # Read all non-comment IDs from trigger-tests.md
+    while IFS=$'\t' read -r id phrase ref; do
+      [[ "$id" =~ ^# ]] && continue
+      [ -z "$id" ] && continue
+      ids+=("$id")
+    done < "$TEST_CASES"
+  fi
+
+  echo "$title"
+  printf '%0.s=' $(seq 1 ${#title})
+  echo ""
+  echo "Run each prompt in the chat and confirm the result."
+  echo ""
+
+  # Lookup helpers (bash 3 compatible — no associative arrays)
+  lookup_phrase() { awk -F'\t' -v id="$1" '$1==id{print $2; exit}' "$TEST_CASES"; }
+  lookup_ref()    { awk -F'\t' -v id="$1" '$1==id{print $3; exit}' "$TEST_CASES"; }
+
+  for id in "${ids[@]}"; do
+    phrase="$(lookup_phrase "$id")"
+    ref="$(lookup_ref "$id")"
+    echo "[$id] Prompt : \"$phrase\""
+    if [ "$ref" = "NONE" ]; then
+      echo "     Expect : ios-build-speed does NOT activate"
+    else
+      echo "     Expect : ios-build-speed activates → reads references/$ref.md"
+    fi
+    printf "     Result : [Enter = pass / f = fail] "
+    read -r input
+    if [ "$input" = "f" ]; then
+      fail "$id: $phrase"
+    else
+      pass "$id"
+    fi
+    echo ""
+  done
+
+  summary
+}
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 case "${1:-}" in
-  --static) run_static ;;
-  *) echo "Usage: $0 --static | --quick | --manual | --ci"; exit 1 ;;
+  --static)    run_static ;;
+  --quick|"")  run_interactive quick ;;
+  --manual)    run_interactive manual ;;
+  --ci)        echo "TODO: --ci mode"; exit 1 ;;
+  *)
+    echo "Usage: $0 [--quick | --manual | --static | --ci]"
+    exit 1
+    ;;
 esac

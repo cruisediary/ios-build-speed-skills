@@ -1,0 +1,20 @@
+name: Trigger Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'skills/**'
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run integration trigger tests
+        run: bash tests/run-tests.sh --ci || [ $? -eq 2 ]
+        # Exit code 2 = SKIP (ANTHROPIC_API_KEY not set) — treated as success.
+        # Exit code 1 = test failures — treated as failure.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

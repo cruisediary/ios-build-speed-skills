@@ -1,0 +1,18 @@
+name: Trigger Static Tests
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'tests/**'
+    # SECURITY: Do NOT change this event to pull_request_target.
+    # pull_request_target passes repository secrets to fork PRs,
+    # allowing untrusted code to exfiltrate ANTHROPIC_API_KEY.
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run static trigger tests
+        run: bash tests/run-tests.sh --static

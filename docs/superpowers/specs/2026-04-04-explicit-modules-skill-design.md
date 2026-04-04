@@ -60,7 +60,7 @@ Adding a reference file alone changes nothing — the `description` field drives
 
 Check 1 and 2 via `grep` on `project.pbxproj`.
 Check 3 via `grep IPHONEOS_DEPLOYMENT_TARGET project.pbxproj | sort -u`.
-Check 4 via `grep -E "module mismatch|compiled with" ~/Library/Developer/Xcode/DerivedData/*/Logs/Build/*.xcactivitylog 2>/dev/null | head -5` (best-effort, skip if no logs).
+Check 4 via `find ~/Library/Developer/Xcode/DerivedData -name "*.xcactivitylog" 2>/dev/null | head -1 | xargs grep -E "module mismatch|compiled with" 2>/dev/null | head -5` (best-effort, skip if no logs found).
 
 **REPORT**
 Follow `../core/report-formatter.md` format. Example:
@@ -120,11 +120,14 @@ See `examples/explicit-modules/` for before/after.
 
 ```bash
 # Redundant @MainActor on UIKit/AppKit base class subclasses
-grep -rn "@MainActor" --include="*.swift" . | grep -v "\.build" \
+# -A1 captures the line after each @MainActor hit, handling the standard
+# multi-line annotation style (@MainActor on its own line above `class`)
+grep -rn -A1 "@MainActor" --include="*.swift" . | grep -v "\.build" \
   | grep -E "class .+: (UIViewController|NSViewController|UIView|UITableViewCell|UICollectionViewCell)" | wc -l
 
 # nonisolated(unsafe) — indicates unresolved isolation issues
-grep -rn "nonisolated(unsafe)" --include="*.swift" . | grep -v "\.build" | wc -l
+# -F treats the string as a fixed literal (parens are not regex metacharacters)
+grep -rFn "nonisolated(unsafe)" --include="*.swift" . | grep -v "\.build" | wc -l
 ```
 
 | Finding | Threshold | Severity | Note |

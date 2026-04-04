@@ -41,7 +41,7 @@ run_static() {
 
   # Check 1: Routing table completeness
   echo "Check 1: Routing table completeness"
-  EXPECTED_STEMS=(build-timeline build-settings concurrency-settings xcode-settings \
+  EXPECTED_STEMS=(build-timeline build-settings explicit-modules concurrency-settings xcode-settings \
     script-phases link-settings modular-architecture protocol-separation \
     type-annotations preview-isolation pods-settings xcode-cache ci-cache ci-workflow)
 

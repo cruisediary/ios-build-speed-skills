@@ -27,11 +27,21 @@ If Xcode < 14: display 🔴 warning, skip all automated changes — `SWIFT_STRIC
 |---|---|---|
 | `@unchecked Sendable` conformances | > 10 occurrences | 🟡 Medium |
 | `@MainActor` annotations (all usages) | > 20 occurrences | 🟡 Medium |
+| Redundant `@MainActor` on UIKit/AppKit subclasses | > 0 | 🟡 Medium |
+| `nonisolated(unsafe)` usages | > 5 | 🟡 Medium |
 
 Detect with:
 ```bash
 grep -r "@unchecked Sendable" --include="*.swift" . | grep -v "\.build" | wc -l
 grep -rn "@MainActor" --include="*.swift" . | grep -v "\.build" | wc -l
+
+# Redundant @MainActor on UIKit/AppKit base class subclasses
+# -A1 captures the class declaration line following the annotation
+grep -rn -A1 "@MainActor" --include="*.swift" . | grep -v "\.build" \
+  | grep -E "class .+: (UIViewController|NSViewController|UIView|UITableViewCell|UICollectionViewCell)" | wc -l
+
+# nonisolated(unsafe) — indicates unresolved actor isolation
+grep -rFn "nonisolated(unsafe)" --include="*.swift" . | grep -v "\.build" | wc -l
 ```
 
 ## REPORT
@@ -43,6 +53,25 @@ Follow `../core/report-formatter.md` format.
 Impact:         Full data race safety checking on every incremental build; measurably slower type-checking across the whole module
 Recommendation: Set SWIFT_STRICT_CONCURRENCY = targeted for Debug. Keep complete in your CI/Release scheme.
 Example:        examples/concurrency-settings/
+```
+
+```
+🟡 [Medium] 4 redundant @MainActor annotations on UIViewController subclasses
+Impact:         Redundant annotations do not change behavior but increase incremental
+                type-checking work. Each annotation is an additional constraint the
+                type checker must verify on every rebuild of the affected file.
+Recommendation: Remove @MainActor from classes that inherit from UIViewController,
+                NSViewController, UIView, UITableViewCell, UICollectionViewCell.
+                Xcode 26: use "Fix All Issues" to remove in bulk.
+```
+
+```
+🟡 [Medium] 7 nonisolated(unsafe) usages
+Impact:         Each instance is a suppressed actor isolation error. The Swift type checker
+                still evaluates the isolation context — it just skips enforcement.
+                High counts indicate unresolved isolation design that adds type-checker work.
+Recommendation: Resolve the underlying actor isolation issue and remove nonisolated(unsafe).
+                Xcode 26: fix-its are available in the Issue Navigator.
 ```
 
 ## ACTION
@@ -83,3 +112,5 @@ See `examples/concurrency-settings/` for before/after xcconfig files.
 - [SE-0306 — Actors](https://github.com/apple/swift-evolution/blob/main/proposals/0306-actors.md)
 - [Xcode Build Settings Reference — Apple Developer](https://developer.apple.com/documentation/xcode/build-settings-reference)
 - [Swift 6 migration guide — Swift.org](https://www.swift.org/documentation/swift-6-concurrency-migration-guide/)
+- [WWDC24-10135 — What's New in Xcode 16](https://developer.apple.com/videos/play/wwdc2024/10135/) — Swift 6 migration assistant, redundant `@MainActor` annotation guidance
+- [WWDC25-247 — What's New in Xcode 26](https://developer.apple.com/videos/play/wwdc2025/247/) — `@MainActor` fix-its, `nonisolated(unsafe)` cleanup tooling

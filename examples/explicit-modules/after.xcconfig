@@ -1,0 +1,21 @@
+// After: project with explicitly built modules enabled (Xcode 16+)
+// Each module is compiled once as an independent build task. The compiler
+// scheduler can parallelise module builds and cache them reliably, cutting
+// clean and incremental build times significantly for modular codebases.
+
+// Minimum deployment target
+IPHONEOS_DEPLOYMENT_TARGET = 16.0
+
+// Swift 5.9 is the minimum version that supports ENABLE_EXPLICIT_MODULE_BUILDS
+SWIFT_VERSION = 5.9
+
+// Incremental compilation — unchanged; incremental + explicit modules together
+// give the best incremental build performance
+SWIFT_COMPILATION_MODE = incremental
+
+// Xcode 16+: compile modules once, share cache across all targets
+ENABLE_EXPLICIT_MODULE_BUILDS = YES
+
+ONLY_ACTIVE_ARCH = YES
+DEBUG_INFORMATION_FORMAT = dwarf
+SWIFT_OPTIMIZATION_LEVEL = -Onone

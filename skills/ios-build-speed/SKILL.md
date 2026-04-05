@@ -1,6 +1,6 @@
 ---
 name: ios-build-speed
-description: "Use when the user mentions slow iOS/Xcode builds, wants to improve compile time, reduce incremental build times, optimize Xcode settings, fix slow CI pipelines, or asks about DerivedData, Swift compilation, CocoaPods linkage, build flags, or GitHub Actions for iOS."
+description: "Use when the user mentions slow iOS/Xcode builds, wants to improve compile time, reduce incremental build times, optimize Xcode settings, fix slow CI pipelines, or asks about DerivedData, Swift compilation, CocoaPods linkage, build flags, GitHub Actions for iOS, explicitly built modules, module recompilation, ENABLE_EXPLICIT_MODULE_BUILDS, redundant @MainActor annotations, or nonisolated(unsafe)."
 license: MIT
 compatibility: Requires Claude Code
 metadata:
@@ -19,6 +19,7 @@ Start with `references/build-timeline.md` to establish a baseline, then follow i
 |---|---|
 | Build log analysis | `references/build-timeline.md` |
 | Build flags, compilation mode | `references/build-settings.md` |
+| Explicitly built modules (Xcode 16+) | `references/explicit-modules.md` |
 | Swift Concurrency overhead | `references/concurrency-settings.md` |
 | Xcode IDE preferences | `references/xcode-settings.md` |
 | Run Script phases | `references/script-phases.md` |
